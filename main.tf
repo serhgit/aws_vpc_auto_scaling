@@ -822,7 +822,7 @@ resource "aws_autoscaling_group" "autoscaling_web_behind_lb" {
   #in non-default VPC
   vpc_zone_identifier = aws_subnet.vpc_subnets.*.id
 
-  desired_capacity = 3
+  desired_capacity = 2
   min_size         = 2
   max_size         = 6
 
