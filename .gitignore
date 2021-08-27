@@ -1,5 +1,6 @@
 .terraform/
 .terraform.lock.*
+lambda_functions/*.zip
 Access.txt
 terraform.tfstate
 terraform.tfstate.*
