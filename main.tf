@@ -689,6 +689,8 @@ resource "aws_lb_listener" "web_lb_http" {
   }
 }
 
+
+
 #resource "aws_lb_listener" "web_lb_https" {
 #  load_balancer_arn = aws_lb.web_lb.arn
 #  port              = 443
@@ -701,6 +703,41 @@ resource "aws_lb_listener" "web_lb_http" {
 #    target_group_arn = aws_lb_target_group.web_lb_https_target.arn
 #  }
 #}
+
+resource "aws_lb_listener_rule" "web_lb_http_rule_http_tg" {
+  listener_arn = aws_lb_listener.web_lb_http.arn
+  priority     = 100
+  action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.web_lb_http_target.arn
+  }
+
+  condition {
+    path_pattern {
+      values = ["/*"]
+    }
+  }
+}
+
+resource "aws_lb_listener_rule" "web_lb_http_rule_fixed_content" {
+  listener_arn = aws_lb_listener.web_lb_http.arn
+  priority     = 200
+
+  action {
+    type = "fixed-response"
+
+    fixed_response {
+      content_type = "text/plain"
+      message_body = "Your servers are down. Have a nice day."
+      status_code  = "503"
+    }
+  }
+  condition {
+    path_pattern {
+      values = ["/*"]
+    }
+  }
+}
 
 resource "aws_key_pair" "ec2_bastion" {
   key_name   = "ec2-bastion"
